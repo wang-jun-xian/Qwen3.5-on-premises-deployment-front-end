@@ -1,0 +1,9 @@
+torch>=2.5
+torchvision
+transformers>=4.57
+accelerate
+sentencepiece
+av
+pillow
+numpy
+flask

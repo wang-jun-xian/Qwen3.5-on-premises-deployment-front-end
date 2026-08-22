@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Qwen3.5-4B · 本地多模态助手</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div id="app">
+    <aside id="sidebar">
+      <div class="brand">
+        <div class="logo">Q</div>
+        <div>
+          <div class="brand-name">Qwen3.5-4B</div>
+          <div class="brand-sub">本地多模态助手</div>
+        </div>
+      </div>
+      <button id="new-chat" class="btn primary wide">＋ 新对话</button>
+      <div id="session-list" class="session-list"></div>
+      <div id="model-status" class="model-status">
+        <div class="status-dot"></div>
+        <span id="status-text">检查中…</span>
+      </div>
+    </aside>
+
+    <main id="main">
+      <header id="chat-header">
+        <div class="header-title">
+          <div id="chat-title">新对话</div>
+          <div id="chat-subtitle">文本 · 图片 · 视频 · 多轮记忆</div>
+        </div>
+        <div class="header-actions">
+          <button id="btn-params" class="btn ghost" title="生成参数">⚙ 参数</button>
+          <button id="btn-clear" class="btn ghost" title="清空当前会话消息">清空</button>
+          <button id="btn-delete" class="btn ghost danger" title="删除当前会话">删除</button>
+        </div>
+      </header>
+
+      <div id="messages" class="messages">
+        <div id="welcome" class="welcome">
+          <h1>你好，我是本地运行的 Qwen3.5-4B 👋</h1>
+          <p>文本对话 · 图片理解 · 视频理解 · 多轮历史记忆，全部在你自己电脑上运行。</p>
+          <div class="feature-chips">
+            <span>✍️ 文本</span>
+            <span>🖼 图片</span>
+            <span>🎬 视频</span>
+            <span>🧠 思考模式</span>
+            <span>💾 持久记忆</span>
+            <span>🔧 工具调用</span>
+          </div>
+        </div>
+      </div>
+
+      <footer id="composer">
+        <div id="attachment-preview" class="attachment-preview"></div>
+        <div class="composer-row">
+          <button id="btn-attach" class="icon-btn" title="添加图片 / 视频">📎</button>
+          <input type="file" id="file-input" accept="image/*,video/*" multiple hidden>
+          <textarea id="input" rows="1" placeholder="输入消息…（可同时发送图片 / 视频）"></textarea>
+          <button id="btn-send" class="icon-btn send" title="发送 (Enter)">➤</button>
+          <button id="btn-stop" class="icon-btn stop" title="停止生成" hidden>■</button>
+        </div>
+        <div class="hint">Enter 发送 · Shift+Enter 换行 · <span id="think-state"></span> · 模型在本地运行，生成较慢请耐心等待</div>
+      </footer>
+    </main>
+  </div>
+
+  <div id="params-modal" class="modal hidden">
+    <div class="modal-card">
+      <h2>生成参数</h2>
+
+      <label class="field-label">系统提示词（每轮生效，跨会话记忆）</label>
+      <textarea id="p-system" rows="3" placeholder="例如：你是一个乐于助人的中文助手，回答简洁。"></textarea>
+
+      <label class="switch-row">
+        <span>🧠 思考模式（先思考再回答）</span>
+        <input type="checkbox" id="p-thinking" checked>
+        <span class="switch"></span>
+      </label>
+
+      <label class="switch-row">
+        <span>🔧 工具调用演示（计算器 / 当前时间）</span>
+        <input type="checkbox" id="p-tools">
+        <span class="switch"></span>
+      </label>
+
+      <label class="field-label">
+        温度 <span id="p-temp-v" class="val">1.00</span>
+        <input type="range" id="p-temp" min="0" max="2" step="0.05" value="1.0">
+      </label>
+      <label class="field-label">
+        Top-P <span id="p-topp-v" class="val">0.95</span>
+        <input type="range" id="p-topp" min="0.05" max="1" step="0.05" value="0.95">
+      </label>
+      <label class="field-label">
+        Top-K <span id="p-topk-v" class="val">20</span>
+        <input type="range" id="p-topk" min="1" max="100" step="1" value="20">
+      </label>
+      <label class="field-label">
+        最大新 tokens
+        <input type="number" id="p-max" min="64" max="8192" step="64" value="2048">
+      </label>
+
+      <div class="modal-actions">
+        <button id="params-close" class="btn primary">完成</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
